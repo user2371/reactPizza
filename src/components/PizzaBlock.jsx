@@ -1,28 +1,29 @@
-import React from "react"
+import React, { useState } from "react"
 
 const PizzaBlock = ({title, price}) => {
+    const [pizzaCount, setPizzaCount] = useState(0);
     return (
-        <div class="pizza-block">
+        <div className="pizza-block">
             <img
-                class="pizza-block__image"
+                className="pizza-block__image"
                 src="./img/fullSizePizza.png"
                 alt="Pizza"
             />
-            <h4 class="pizza-block__title">{title || "Название пиццы"}</h4>
-            <div class="pizza-block__selector">
+            <h4 className="pizza-block__title">{title || "Название пиццы"}</h4>
+            <div className="pizza-block__selector">
                 <ul>
-                    <li class="active">тонкое</li>
+                    <li className="active">тонкое</li>
                     <li>традиционное</li>
                 </ul>
                 <ul>
-                    <li class="active">26 см.</li>
+                    <li className="active">26 см.</li>
                     <li>30 см.</li>
                     <li>40 см.</li>
                 </ul>
             </div>
-            <div class="pizza-block__bottom">
-                <div class="pizza-block__price">от {price || 0}₽</div>
-                <div class="button button--outline button--add">
+            <div className="pizza-block__bottom">
+                <div className="pizza-block__price">от {price || 0}₽</div>
+                <button className="button button--outline button--add" onClick={() => setPizzaCount(pizzaCount + 1)}>
                     <svg
                         width="12"
                         height="12"
@@ -36,8 +37,8 @@ const PizzaBlock = ({title, price}) => {
                         />
                     </svg>
                     <span>Добавить</span>
-                    <i>2</i>
-                </div>
+                    <i>{pizzaCount}</i>
+                </button>
             </div>
         </div>
     )
