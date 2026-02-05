@@ -1,10 +1,6 @@
 import React, { useState } from "react"
-import pizza from "../assets/img/fullSizePizza.png"
-import pizzaImg from '../assets/img/fullSizePizza.png'
-import pizzasArr from "../assets/pizzasArr/pizzasArr.json"
 
-
-const PizzaBlock = ({ title, price, types, sizes, id }) => {
+const PizzaBlock = ({ title, price, types, sizes, id, imageUrl }) => {
     const pizzaTypes = ["тонкое", "традиционное"]
     const [seletedPizzaType, setSelectedPizzaType] = useState(pizzaTypes[types[0]]);
     const [selectedPizzaSize, setSelectedPizzaSize] = useState(null)
@@ -13,7 +9,7 @@ const PizzaBlock = ({ title, price, types, sizes, id }) => {
             <div className="pizza-block" key={id}>
                 <img
                     className="pizza-block__image"
-                    src={pizzaImg}
+                    src={imageUrl}
                     alt="Pizza"
                 />
                 <h4 className="pizza-block__title">{title || "Название пиццы"}</h4>
@@ -29,9 +25,9 @@ const PizzaBlock = ({ title, price, types, sizes, id }) => {
 
                     </ul>
                     <ul>
-                        {sizes.map((pizzaSize) => {
+                        {sizes.map((pizzaSize, index) => {
                             return (
-                                <li className={pizzaSize === selectedPizzaSize ? "active" : ""} onClick={() => { setSelectedPizzaSize(pizzaSize) }}>{pizzaSize} см.</li>
+                                <li key={index} className={pizzaSize === selectedPizzaSize ? "active" : ""} onClick={() => { setSelectedPizzaSize(pizzaSize) }}>{pizzaSize} см.</li>
                             )
                         })}
                     </ul>

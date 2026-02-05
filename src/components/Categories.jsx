@@ -12,8 +12,8 @@ const Categories = (props) => {
     <div>
       <div className="categories">
         <ul>
-          {categories.map((item) => {
-            return <li className={activeCategory === item ? "active" : ""} onClick={() => { onSelectCategory(item) }}>{item}</li>
+          {categories.map((item, index) => {
+            return <li key={index} className={activeCategory === item ? "active" : ""} onClick={() => { onSelectCategory(item) }}>{item}</li>
           })}
         </ul>
       </div>
