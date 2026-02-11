@@ -14,21 +14,26 @@ const Home = (props) => {
                 setIsLoading(false);
                 setPizzas(json)
             })
-
+        window.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: "smooth" 
+        });
     }, [])
     return (
         <>
-            <div className="content__top">
-                <Categories />
-                <Sort />
-            </div>
-            <h2 className="content__title">Все пиццы</h2>
-            <div className="content__items">
-                {isLoading
-                    ? [...new Array(10)].map((_, index) => <PizzaCardSkeleton key={index} />)
-                    : pizzas.map(pizza => <PizzaBlock {...pizza} key={pizza.id} />)}
+            <div className="container">
+                <div className="content__top">
+                    <Categories />
+                    <Sort />
+                </div>
+                <h2 className="content__title">Все пиццы</h2>
+                <div className="content__items">
+                    {isLoading
+                        ? [...new Array(10)].map((_, index) => <PizzaCardSkeleton key={index} />)
+                        : pizzas.map(pizza => <PizzaBlock {...pizza} key={pizza.id} />)}
 
-
+                </div>
             </div>
         </>
     )

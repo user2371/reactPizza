@@ -4,7 +4,7 @@ import logo from "../assets/img/pizza-logo.svg"
 
 const Header = (props) => {
   return (
-    <div className="header">
+    <div className="header" id="header">
       <div className="container">
         <Link to="/">
           <div className="header__logo">

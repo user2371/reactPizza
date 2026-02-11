@@ -3,11 +3,10 @@
 .pizza-block {
   width: 280px;
   text-align: center;
+  margin: 0 auto;
   margin-bottom: 65px;
 
-  &:not(:nth-of-type(4n)) {
-    margin-right: 35px;
-  }
+
 
   &__image {
     width: 260px;
@@ -26,6 +25,7 @@
     border-radius: 10px;
     flex-direction: column;
     padding: 6px;
+    margin: 0 auto;
 
     ul {
       display: flex;
@@ -42,6 +42,7 @@
         font-weight: 600;
         font-size: 14px;
         @include noselect();
+
         &.active {
           background: #ffffff;
           box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.04);
@@ -64,5 +65,21 @@
     font-size: 22px;
     line-height: 27px;
     letter-spacing: 0.015em;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .pizza-block {
+    &__title {
+      font-size: 18px;
+    }
+
+    &__selector {
+      width: 260px;
+    }
+     &__bottom {
+      justify-content: center;
+      gap: 20px;
+     }
   }
 }

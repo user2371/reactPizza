@@ -1,7 +1,7 @@
 import "./scss/app.scss";
 import Header from "./components/Header";
 import Home from "./pages/Home";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, HashRouter, Route, Routes } from "react-router-dom";
 import Cart from "./pages/Cart";
 import NotFound from "./pages/NotFound";
 import MainLayout from "./pages/MainLayout";
@@ -10,7 +10,7 @@ function App() {
 
   return (
     <>
-      <BrowserRouter>
+      <HashRouter>
               <Routes>
                 <Route  path="/" element={<MainLayout/>}>
                   <Route index  element={<Home />}></Route>
@@ -20,7 +20,7 @@ function App() {
               </Routes>
 
 
-      </BrowserRouter>
+      </HashRouter>
     </>
   );
 }
