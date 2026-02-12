@@ -1,17 +1,23 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 
-const Sort = (props) => {
+const Sort = ({ setOrderAsc, sortBy, setSortBy, orderAsc }) => {
   const [isOpen, setIsOpen] = useState(false)
-  const [sortBy, setSortBy] = useState("популярности")
   const sortList = ["популярности", "цене", "алфавиту"]
+
   function handleSortBy(option) {
     setSortBy(option)
     setIsOpen(false)
   }
+
+  function handleOrderClick() {
+    setOrderAsc(!orderAsc);
+  }
+
+
   return (
     <div className="sort">
-      <div className="sort__label">
-        <svg
+      <div className={"sort__label"}>
+        <svg className={orderAsc ? "sort__label" : "sort__label sort__label--reverse"} onClick={handleOrderClick}
           width="10"
           height="6"
           viewBox="0 0 10 6"
@@ -24,13 +30,13 @@ const Sort = (props) => {
           />
         </svg>
         <b>Сортировка по:</b>
-        <span onClick={() => { setIsOpen(!isOpen) }}>{sortBy}</span>
+        <span onClick={() => { setIsOpen(!isOpen) }}>{sortList[sortBy]}</span>
       </div>
       {isOpen &&
         <div className="sort__popup">
           <ul>
             {sortList.map((item, index) => {
-              return <li key={index}className={sortBy === item ? "active" : ""} onClick={() => handleSortBy(item)}>{item}</li>
+              return <li key={index} className={sortBy === index ? "active" : ""} onClick={() => handleSortBy(index)}>{item}</li>
             })}
           </ul>
         </div>}

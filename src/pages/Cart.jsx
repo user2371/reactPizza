@@ -28,7 +28,7 @@ const Cart = (props) => {
           <div className="cart__item-img">
             <img
               className="pizza-block__image"
-              src="https://dodopizza-a.akamaihd.net/static/Img/Products/Pizza/ru-RU/b750f576-4a83-48e6-a283-5a8efb68c35d.jpg"
+              src="https://cdn.jsdelivr.net/gh/user2371/reactPizza@057bdd63363d34023f6931dca8482e6fce80d8b2/public/1.avif"
               alt="Pizza"
             />
           </div>
@@ -70,7 +70,7 @@ const Cart = (props) => {
           <div className="cart__item-img">
             <img
               className="pizza-block__image"
-              src="https://dodopizza-a.akamaihd.net/static/Img/Products/Pizza/ru-RU/b750f576-4a83-48e6-a283-5a8efb68c35d.jpg"
+              src="https://cdn.jsdelivr.net/gh/user2371/reactPizza@057bdd63363d34023f6931dca8482e6fce80d8b2/public/1.avif"
               alt="Pizza"
             />
           </div>
@@ -112,7 +112,7 @@ const Cart = (props) => {
           <div className="cart__item-img">
             <img
               className="pizza-block__image"
-              src="https://dodopizza-a.akamaihd.net/static/Img/Products/Pizza/ru-RU/b750f576-4a83-48e6-a283-5a8efb68c35d.jpg"
+              src="https://cdn.jsdelivr.net/gh/user2371/reactPizza@057bdd63363d34023f6931dca8482e6fce80d8b2/public/1.avif"
               alt="Pizza"
             />
           </div>
@@ -154,7 +154,7 @@ const Cart = (props) => {
           <div className="cart__item-img">
             <img
               className="pizza-block__image"
-              src="https://dodopizza-a.akamaihd.net/static/Img/Products/Pizza/ru-RU/b750f576-4a83-48e6-a283-5a8efb68c35d.jpg"
+              src="https://cdn.jsdelivr.net/gh/user2371/reactPizza@057bdd63363d34023f6931dca8482e6fce80d8b2/public/1.avif"
               alt="Pizza"
             />
           </div>
