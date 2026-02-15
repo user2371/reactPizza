@@ -2,11 +2,11 @@ import React from "react"
 import { Outlet } from "react-router-dom";
 import Header from "../components/Header";
 
-const MainLayout = (props) => {
+const MainLayout = ({ searchStr, setSearchStr }) => {
     return (
         <>
             <div className="wrapper">
-                <Header />
+                <Header searchStr={searchStr} setSearchStr={setSearchStr} />
                 <div className="content">
                     <Outlet />
                 </div>

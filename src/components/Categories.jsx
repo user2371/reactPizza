@@ -1,12 +1,13 @@
 import React, { useState } from "react"
 
 
-const Categories = ({setActiveCategory, activeCategory}) => {
+const Categories = ({setActiveCategory, activeCategory, setPage}) => {
   
   const categories = ['Все', 'Мясные', 'Вегетарианская', 'Гриль', 'Острые', 'Закрытые'];
 
   function onSelectCategory(index) {
     setActiveCategory(index);
+    setPage(1);
   }
   return (
     <div>

@@ -1,0 +1,38 @@
+
+span {
+    display: inline-block;
+    padding: 3px;
+    font-size: 14px;
+    line-height: 15px;
+    min-width: 15px;
+    text-align: center;
+}
+.selectedPage {
+    font-weight: bold;
+    background-color: black;
+    color: white;
+} 
+.Pagination {
+    width: 700px;
+    margin: 0 auto;
+    margin-bottom: 20px;
+    cursor: pointer;
+    user-select: none;
+    text-align: center;
+}
+.leftArrow,
+.rightArrow,
+.page,
+.firstPageDoubleArrow,
+.lastPageDoubleArrow,
+.pageNumberField,
+.pages
+ {
+  display: inline-block;
+  padding: 0px 5px;
+}
+
+.pageNumberField input {
+  width: 50px;
+}
+

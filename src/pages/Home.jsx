@@ -1,43 +1,120 @@
 import React, { useEffect, useState } from "react"
 import Categories from "../components/Categories";
+import Pagination from "../components/Pagination/Pagination";
 import PizzaBlock from "../components/PizzaBlock";
 import PizzaCardSkeleton from "../components/PizzaBlock/PizzaCardSkeleton";
 import Sort from "../components/Sort";
 
 const Home = (props) => {
-    const [pizzas, setPizzas] = useState([]);    
+    const [pizzas, setPizzas] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [activeCategory, setActiveCategory] = useState(0);
     const [sortBy, setSortBy] = useState(0);
-    const [orderAsc, setOrderAsc] = useState(true)    
+    const [orderAsc, setOrderAsc] = useState(true)
     const sortList = ["rating", "price", "title"]
+    let [notFound, setNotFound] = useState(false);
+    const pageSize = 8;
+    const [page, setPage] = useState(1);
+    const [totalPizzasCount, setTotalPizzasCount] = useState(0);
 
-    useEffect(() => {
+    function fetchPizzas(page, pageSize) {
+        setPage(page);
         setIsLoading(true)
+
         const order = orderAsc ? "asc" : "desc";
         const category = activeCategory > 0 ? activeCategory : "";
-        fetch(`https://694f0a738531714d9bcd36d3.mockapi.io/items?category=${category}&sortBy=${sortList[sortBy]}&order=${order}`)
+        const title = props.searchStr ? `&title=${props.searchStr}` : "";
+        fetch(`https://694f0a738531714d9bcd36d3.mockapi.io/items?category=${category}&sortBy=${sortList[sortBy]}&order=${order}${title}&limit=${pageSize}&page=${page}`)
             .then(res => res.json())
             .then(json => {
                 setIsLoading(false);
-                setPizzas(json)
+                if (json === "Not found") {
+                    setNotFound(true);
+                } else {
+                    setNotFound(false);
+                    setPizzas(json)
+                }
             });
+    }
 
+
+    function fetchPizzasCount() {
+        const order = orderAsc ? "asc" : "desc";
+        const category = activeCategory > 0 ? activeCategory : "";
+        const title = props.searchStr ? `&title=${props.searchStr}` : "";
+        fetch(`https://694f0a738531714d9bcd36d3.mockapi.io/items?category=${category}&sortBy=${sortList[sortBy]}&order=${order}${title}`)
+            .then(res => res.json())
+            .then(json => {
+                setTotalPizzasCount(json.length)
+            })
+    }
+
+
+    useEffect(() => {
+        fetchPizzas(page, pageSize)
+        fetchPizzasCount()
         window.scrollTo({
             top: 0,
             left: 0,
             behavior: "smooth"
         });
-    }, [sortBy, orderAsc, activeCategory])
+    }, [sortBy, orderAsc, activeCategory, props.searchStr, page, pageSize, totalPizzasCount]);
 
 
+
+    function onPageChanged(page) {
+        fetchPizzas(page, pageSize)
+    }
+
+    function onFirstPageDoubleArrowClick() {
+        if (page <= 1) {
+            return
+        }
+        fetchPizzas(1, pageSize)
+    }
+
+    function onLastPageDoubleArrowClick() {
+        if (page >= Math.ceil(totalPizzasCount / pageSize)) {
+            return
+        }
+        let lastPage = Math.ceil(totalPizzasCount / pageSize);
+        fetchPizzas(lastPage, pageSize)
+    }
+
+    function onNumberInputChange(page) {
+        if (typeof (page) !== "number") {
+            page = +page
+        }
+        if (page < 1 || page === null || page > Math.ceil(totalPizzasCount / pageSize)) {
+            return
+        } else {
+            fetchPizzas(page, pageSize)
+        }
+    }
+
+    function onLeftArrowClick() {
+        let previousPage = page - 1
+        if (previousPage < 1) {
+            return
+        }
+        fetchPizzas(previousPage, pageSize)
+    }
+
+    function onRightArrowClick() {
+        let nextPage = page + 1
+        if (nextPage > Math.ceil(totalPizzasCount / pageSize)) {
+            return
+        }
+        fetchPizzas(nextPage, pageSize)
+    }
     return (
         <>
             <div className="container">
                 <div className="content__top">
                     <Categories
                         activeCategory={activeCategory}
-                        setActiveCategory={setActiveCategory} />
+                        setActiveCategory={setActiveCategory}
+                        setPage={setPage} />
                     <Sort setPizzas={setPizzas}
                         sortBy={sortBy}
                         setSortBy={setSortBy}
@@ -48,9 +125,21 @@ const Home = (props) => {
                 <div className="content__items">
                     {isLoading
                         ? [...new Array(10)].map((_, index) => <PizzaCardSkeleton key={index} />)
-                        : pizzas.map(pizza => <PizzaBlock {...pizza} key={pizza.id} />)}
-
+                        : notFound ? <h2 className="content__title">Пиццы не найдены</h2> : pizzas.map((pizza) => <PizzaBlock key={pizza.id} {...pizza} />)
+                    }
                 </div>
+                <Pagination
+                    totalPizzasCount={totalPizzasCount}
+                    pageSize={pageSize}
+                    currentPage={page}
+                    onPageChanged={onPageChanged}
+                    onFirstPageDoubleArrowClick={onFirstPageDoubleArrowClick}
+                    onLastPageDoubleArrowClick={onLastPageDoubleArrowClick}
+                    onNumberInputChange={onNumberInputChange}
+                    onLeftArrowClick={onLeftArrowClick}
+                    onRightArrowClick={onRightArrowClick}
+                    notFound={notFound}
+                />
             </div>
         </>
     )

@@ -1,10 +1,11 @@
 import React from "react"
-import styles from "../components/NotFoundBlock/NotFoundBlock.module.scss"
+import NotFoundBlock from "../components/NotFoundBlock/NotFoundBlock";
+
 const NotFound = (props) => {
   return (
-    <h1 className={styles.root}>
-      Not found :(
-    </h1>
+    <>
+    <NotFoundBlock />
+    </>
   )
 };
 
