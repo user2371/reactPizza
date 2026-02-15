@@ -1,9 +1,12 @@
-import React, { useEffect } from "react"
+import React, { useContext, useEffect } from "react"
+import { AppContext } from "../../App";
 import styles from "./Search.module.scss"
 
-const Search = ({ searchStr, setSearchStr }) => {
+const Search = () => {
+  const {searchStr, setSearchStr, setPage} = useContext(AppContext);
   function onChangeInput(e) {
     setSearchStr(e.target.value);
+    setPage(1);
   }
   function onClearInput() {
     setSearchStr("");

@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
+import { AppContext } from "../App";
 import Categories from "../components/Categories";
 import Pagination from "../components/Pagination/Pagination";
 import PizzaBlock from "../components/PizzaBlock";
 import PizzaCardSkeleton from "../components/PizzaBlock/PizzaCardSkeleton";
 import Sort from "../components/Sort";
 
-const Home = (props) => {
+const Home = () => {
+    const {searchStr, page, setPage} = useContext(AppContext);
     const [pizzas, setPizzas] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [activeCategory, setActiveCategory] = useState(0);
@@ -14,7 +16,6 @@ const Home = (props) => {
     const sortList = ["rating", "price", "title"]
     let [notFound, setNotFound] = useState(false);
     const pageSize = 8;
-    const [page, setPage] = useState(1);
     const [totalPizzasCount, setTotalPizzasCount] = useState(0);
 
     function fetchPizzas(page, pageSize) {
@@ -23,7 +24,7 @@ const Home = (props) => {
 
         const order = orderAsc ? "asc" : "desc";
         const category = activeCategory > 0 ? activeCategory : "";
-        const title = props.searchStr ? `&title=${props.searchStr}` : "";
+        const title = searchStr ? `&title=${searchStr}` : "";
         fetch(`https://694f0a738531714d9bcd36d3.mockapi.io/items?category=${category}&sortBy=${sortList[sortBy]}&order=${order}${title}&limit=${pageSize}&page=${page}`)
             .then(res => res.json())
             .then(json => {
@@ -41,7 +42,7 @@ const Home = (props) => {
     function fetchPizzasCount() {
         const order = orderAsc ? "asc" : "desc";
         const category = activeCategory > 0 ? activeCategory : "";
-        const title = props.searchStr ? `&title=${props.searchStr}` : "";
+        const title = searchStr ? `&title=${searchStr}` : "";
         fetch(`https://694f0a738531714d9bcd36d3.mockapi.io/items?category=${category}&sortBy=${sortList[sortBy]}&order=${order}${title}`)
             .then(res => res.json())
             .then(json => {
@@ -58,7 +59,7 @@ const Home = (props) => {
             left: 0,
             behavior: "smooth"
         });
-    }, [sortBy, orderAsc, activeCategory, props.searchStr, page, pageSize, totalPizzasCount]);
+    }, [sortBy, orderAsc, activeCategory, searchStr, page, pageSize]);
 
 
 
