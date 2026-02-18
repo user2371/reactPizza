@@ -11,7 +11,7 @@ export const AppContext = createContext(null);
 function App() {
   const [searchStr, setSearchStr] = useState("");
   const [page, setPage] = useState(1);
-  
+
   return (
     <>
     <AppContext.Provider value = {{searchStr, setSearchStr, page, setPage}}>
