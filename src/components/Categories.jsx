@@ -1,12 +1,15 @@
 import React, { useState } from "react"
+import { useDispatch, useSelector } from "react-redux";
+import { setActiveCategory } from "../redux/slices/filterSlice";
 
 
-const Categories = ({setActiveCategory, activeCategory, setPage}) => {
-  
+const Categories = ({ setPage }) => {
+
   const categories = ['Все', 'Мясные', 'Вегетарианская', 'Гриль', 'Острые', 'Закрытые'];
-
+  const activeCategory = useSelector((state) => state.filterReducer.activeCategory);
+  const dispatch = useDispatch();
   function onSelectCategory(index) {
-    setActiveCategory(index);
+    dispatch(setActiveCategory(index));
     setPage(1);
   }
   return (

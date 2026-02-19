@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from "react"
+import { useSelector } from "react-redux";
 import { AppContext } from "../App";
 import Categories from "../components/Categories";
 import Pagination from "../components/Pagination/Pagination";
@@ -6,14 +7,16 @@ import PizzaBlock from "../components/PizzaBlock";
 import PizzaCardSkeleton from "../components/PizzaBlock/PizzaCardSkeleton";
 import Sort from "../components/Sort";
 
+
+
+const sortList = ["rating", "price", "title"]
+
 const Home = () => {
-    const {searchStr, page, setPage} = useContext(AppContext);
+    const { searchStr, page, setPage } = useContext(AppContext);
     const [pizzas, setPizzas] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [activeCategory, setActiveCategory] = useState(0);
-    const [sortBy, setSortBy] = useState(0);
-    const [orderAsc, setOrderAsc] = useState(true)
-    const sortList = ["rating", "price", "title"]
+    const { activeCategory, sortBy, orderAsc } = useSelector((state) => state.filterReducer);
+
     let [notFound, setNotFound] = useState(false);
     const pageSize = 8;
     const [totalPizzasCount, setTotalPizzasCount] = useState(0);
@@ -112,15 +115,8 @@ const Home = () => {
         <>
             <div className="container">
                 <div className="content__top">
-                    <Categories
-                        activeCategory={activeCategory}
-                        setActiveCategory={setActiveCategory}
-                        setPage={setPage} />
-                    <Sort setPizzas={setPizzas}
-                        sortBy={sortBy}
-                        setSortBy={setSortBy}
-                        setOrderAsc={setOrderAsc}
-                        orderAsc={orderAsc} />
+                    <Categories setPage={setPage} />
+                    <Sort />
                 </div>
                 <h2 className="content__title">Все пиццы</h2>
                 <div className="content__items">

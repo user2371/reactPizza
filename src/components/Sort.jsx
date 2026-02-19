@@ -1,16 +1,22 @@
 import React, { useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux";
+import { setOrderAsc, setSortBy } from "../redux/slices/filterSlice";
 
-const Sort = ({ setOrderAsc, sortBy, setSortBy, orderAsc }) => {
+
+const sortList = ["популярности", "цене", "алфавиту"];
+
+const Sort = () => {
   const [isOpen, setIsOpen] = useState(false)
-  const sortList = ["популярности", "цене", "алфавиту"]
+  const {sortBy, orderAsc} = useSelector((state) => state.filterReducer);
+  const dispatch = useDispatch();
 
   function handleSortBy(option) {
-    setSortBy(option)
+    dispatch(setSortBy(option));
     setIsOpen(false)
   }
 
   function handleOrderClick() {
-    setOrderAsc(!orderAsc);
+    dispatch(setOrderAsc(!orderAsc));
   }
 
 
