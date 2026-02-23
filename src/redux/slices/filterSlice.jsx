@@ -4,6 +4,7 @@ const initialState = {
     activeCategory: 0,
     sortBy: 0,
     orderAsc: true,
+    currentPage: 1,
 }
 
 const filterSlice = createSlice({
@@ -18,9 +19,12 @@ const filterSlice = createSlice({
         },
         setOrderAsc(state, action) {
             state.orderAsc = action.payload;
+        },
+        setCurrentPage(state, action) {
+            state.currentPage = action.payload;
         }
     }
 })
 
-export const { setActiveCategory, setSortBy, setOrderAsc } = filterSlice.actions;
+export const { setActiveCategory, setSortBy, setOrderAsc, setCurrentPage } = filterSlice.actions;
 export default filterSlice.reducer;

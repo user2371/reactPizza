@@ -1,42 +1,51 @@
+import axios from "axios";
 import { useContext, useEffect, useState } from "react"
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { AppContext } from "../App";
 import Categories from "../components/Categories";
 import Pagination from "../components/Pagination/Pagination";
 import PizzaBlock from "../components/PizzaBlock";
 import PizzaCardSkeleton from "../components/PizzaBlock/PizzaCardSkeleton";
 import Sort from "../components/Sort";
+import { setCurrentPage } from "../redux/slices/filterSlice";
 
 
 
 const sortList = ["rating", "price", "title"]
 
 const Home = () => {
-    const { searchStr, page, setPage } = useContext(AppContext);
+    const { searchStr } = useContext(AppContext);
     const [pizzas, setPizzas] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const { activeCategory, sortBy, orderAsc } = useSelector((state) => state.filterReducer);
+    const { activeCategory, sortBy, orderAsc, currentPage  } = useSelector((state) => state.filterReducer);
+    const dispatch = useDispatch();
 
     let [notFound, setNotFound] = useState(false);
     const pageSize = 8;
     const [totalPizzasCount, setTotalPizzasCount] = useState(0);
 
     function fetchPizzas(page, pageSize) {
-        setPage(page);
-        setIsLoading(true)
+        dispatch(setCurrentPage(page));
+        setIsLoading(true);
 
         const order = orderAsc ? "asc" : "desc";
         const category = activeCategory > 0 ? activeCategory : "";
         const title = searchStr ? `&title=${searchStr}` : "";
-        fetch(`https://694f0a738531714d9bcd36d3.mockapi.io/items?category=${category}&sortBy=${sortList[sortBy]}&order=${order}${title}&limit=${pageSize}&page=${page}`)
-            .then(res => res.json())
-            .then(json => {
+
+        axios
+            .get(
+                `https://694f0a738531714d9bcd36d3.mockapi.io/items?category=${category}&sortBy=${sortList[sortBy]}&order=${order}${title}&limit=${pageSize}&page=${page}`,
+                { validateStatus: () => true } // ⬅️ THIS MAKES AXIOS BEHAVE LIKE FETCH
+            )
+            .then((res) => {
                 setIsLoading(false);
-                if (json === "Not found") {
+               
+                if (typeof res.data === "string" && res.data === "Not found") {
                     setNotFound(true);
+                    setPizzas([]);
                 } else {
                     setNotFound(false);
-                    setPizzas(json)
+                    setPizzas(res.data);
                 }
             });
     }
@@ -46,23 +55,23 @@ const Home = () => {
         const order = orderAsc ? "asc" : "desc";
         const category = activeCategory > 0 ? activeCategory : "";
         const title = searchStr ? `&title=${searchStr}` : "";
-        fetch(`https://694f0a738531714d9bcd36d3.mockapi.io/items?category=${category}&sortBy=${sortList[sortBy]}&order=${order}${title}`)
-            .then(res => res.json())
-            .then(json => {
-                setTotalPizzasCount(json.length)
-            })
+        axios.get(`https://694f0a738531714d9bcd36d3.mockapi.io/items?category=${category}&sortBy=${sortList[sortBy]}&order=${order}${title}`,
+            { validateStatus: () => true })
+                .then(res => {
+                    setTotalPizzasCount(res.data.length)
+                })
     }
 
 
     useEffect(() => {
-        fetchPizzas(page, pageSize)
+        fetchPizzas(currentPage, pageSize)
         fetchPizzasCount()
         window.scrollTo({
             top: 0,
             left: 0,
             behavior: "smooth"
         });
-    }, [sortBy, orderAsc, activeCategory, searchStr, page, pageSize]);
+    }, [sortBy, orderAsc, activeCategory, searchStr, currentPage, pageSize]);
 
 
 
@@ -71,14 +80,14 @@ const Home = () => {
     }
 
     function onFirstPageDoubleArrowClick() {
-        if (page <= 1) {
+        if (currentPage <= 1) {
             return
         }
         fetchPizzas(1, pageSize)
     }
 
     function onLastPageDoubleArrowClick() {
-        if (page >= Math.ceil(totalPizzasCount / pageSize)) {
+        if (currentPage >= Math.ceil(totalPizzasCount / pageSize)) {
             return
         }
         let lastPage = Math.ceil(totalPizzasCount / pageSize);
@@ -97,7 +106,7 @@ const Home = () => {
     }
 
     function onLeftArrowClick() {
-        let previousPage = page - 1
+        let previousPage = currentPage - 1
         if (previousPage < 1) {
             return
         }
@@ -105,7 +114,7 @@ const Home = () => {
     }
 
     function onRightArrowClick() {
-        let nextPage = page + 1
+        let nextPage = currentPage + 1
         if (nextPage > Math.ceil(totalPizzasCount / pageSize)) {
             return
         }
@@ -115,7 +124,7 @@ const Home = () => {
         <>
             <div className="container">
                 <div className="content__top">
-                    <Categories setPage={setPage} />
+                    <Categories setCurrentPage={setCurrentPage} />
                     <Sort />
                 </div>
                 <h2 className="content__title">Все пиццы</h2>
@@ -128,7 +137,7 @@ const Home = () => {
                 <Pagination
                     totalPizzasCount={totalPizzasCount}
                     pageSize={pageSize}
-                    currentPage={page}
+                    currentPage={currentPage}
                     onPageChanged={onPageChanged}
                     onFirstPageDoubleArrowClick={onFirstPageDoubleArrowClick}
                     onLastPageDoubleArrowClick={onLastPageDoubleArrowClick}
