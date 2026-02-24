@@ -1,7 +1,7 @@
 import "./scss/app.scss";
 import Header from "./components/Header";
 import Home from "./pages/Home";
-import { BrowserRouter, HashRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter,  Route, Routes } from "react-router-dom";
 import Cart from "./pages/Cart";
 import NotFound from "./pages/NotFound";
 import MainLayout from "./pages/MainLayout";
@@ -15,7 +15,7 @@ function App() {
   return (
     <>
     <AppContext.Provider value = {{searchStr, setSearchStr}}>
-      <HashRouter>
+      <BrowserRouter>
         <Routes>
           <Route path="/" element={<MainLayout/>}>
             <Route index element={<Home />}></Route>
@@ -23,7 +23,7 @@ function App() {
             <Route path="*" element={<NotFound />}></Route>
           </Route>
         </Routes>
-      </HashRouter>
+      </BrowserRouter>
       </AppContext.Provider>
     </>
   );
