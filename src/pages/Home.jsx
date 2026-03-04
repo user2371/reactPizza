@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppContext } from "../App";
 import Categories from "../components/Categories";
 import Pagination from "../components/Pagination/Pagination";
-import PizzaBlock from "../components/PizzaBlock";
+import PizzaBlock from "../components/PizzaBlock/PizzaBlock";
 import PizzaCardSkeleton from "../components/PizzaBlock/PizzaCardSkeleton";
 import Sort from "../components/Sort";
 import { setCurrentPage, setFilters } from "../redux/slices/filterSlice";
@@ -16,24 +16,25 @@ const sortList = ["rating", "price", "title"]
 
 const Home = () => {
     const navigate = useNavigate();
-    const { searchStr } = useContext(AppContext);
-    const [pizzas, setPizzas] = useState([]);
+    const { searchStr } = useContext(AppContext);    
     const [isLoading, setIsLoading] = useState(true);
     const { activeCategory, sortBy, orderAsc, currentPage } = useSelector((state) => state.filterReducer);
     const dispatch = useDispatch();
     const isSearch = useRef(false);
     let isMounted = useRef(false);
-
+    const sortRef = useRef();
+    const [pizzas, setPizzas] = useState([]);
     let [notFound, setNotFound] = useState(false);
-    const pageSize = 8;
     const [totalPizzasCount, setTotalPizzasCount] = useState(0);
+    const pageSize = 8;    
+    const order = orderAsc ? "asc" : "desc";
+    const category = activeCategory > 0 ? activeCategory : "";
+    const search = searchStr ? searchStr : "";
+
 
     function fetchPizzas(page, pageSize) {
         dispatch(setCurrentPage(page));
         setIsLoading(true);
-        const order = orderAsc ? "asc" : "desc";
-        const category = activeCategory > 0 ? activeCategory : "";
-        const search = searchStr ? searchStr : "";
         axios
             .get(
                 `https://694f0a738531714d9bcd36d3.mockapi.io/items?category=${category}&sortBy=${sortList[sortBy]}&order=${order}&title=${search}&limit=${pageSize}&page=${page}`,
@@ -51,12 +52,8 @@ const Home = () => {
             });
     }
 
-
     function fetchPizzasCount() {
-        const order = orderAsc ? "asc" : "desc";
-        const category = activeCategory > 0 ? activeCategory : "";
-        const title = searchStr ? `&title=${searchStr}` : "";
-        axios.get(`https://694f0a738531714d9bcd36d3.mockapi.io/items?category=${category}&sortBy=${sortList[sortBy]}&order=${order}${title}`,
+        axios.get(`https://694f0a738531714d9bcd36d3.mockapi.io/items?category=${category}&sortBy=${sortList[sortBy]}&order=${order}&title=${search}`,
             { validateStatus: () => true })
             .then(res => {
                 setTotalPizzasCount(res.data.length)
@@ -101,7 +98,7 @@ const Home = () => {
             fetchPizzas(currentPage, pageSize)
             fetchPizzasCount()
         }
-        
+
         isSearch.current = false;
         window.scrollTo({
             top: 0,
