@@ -8,6 +8,7 @@ import CartEmpty from "./CartEmpty";
 const Cart = (props) => {
   const dispatch = useDispatch();
   const { items, totalCount, totalPrice } = useSelector((state) => state.cartReducer)
+  
   function onCartClear() {
     dispatch(clearCart())
   }

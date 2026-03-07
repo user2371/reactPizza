@@ -1,24 +1,25 @@
 import debounce from "lodash.debounce";
-import React, { useContext, useEffect, useMemo, useRef, useState } from "react"
+import React, {  useEffect, useMemo, useRef, useState } from "react"
 import { useDispatch } from "react-redux";
-import { AppContext } from "../../App";
-import { setCurrentPage } from "../../redux/slices/filterSlice";
+import { setCurrentPage, setSearchString } from "../../redux/slices/filterSlice";
 import styles from "./Search.module.scss"
 
 const Search = () => {
-  const { searchStr, setSearchStr } = useContext(AppContext);
   const [ localSearchStr, setLocalSearchStr ] = useState("");
   const dispatch = useDispatch();
   const inputRef = useRef();
-  const debounceSearch = useMemo(() => debounce((str) => { setSearchStr(str) }, 500), []);
+  const debounceSearch = useMemo(() => debounce((str) => { setSearchString(str) }, 500), []);
+
   function onChangeInput(e) {
     setLocalSearchStr(e.target.value);
-    dispatch(setCurrentPage(1));
+    dispatch(setCurrentPage(1));    
+    dispatch(setSearchString(e.target.value))
     debounceSearch(e.target.value);
   }
+  
   function onClearInput() {
     setLocalSearchStr("");
-    setSearchStr("");
+    dispatch(setSearchString(""));
     inputRef.current.focus();
   }
 

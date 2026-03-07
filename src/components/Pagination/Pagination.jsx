@@ -37,7 +37,7 @@ const Pagination = (props) => {
     return (
         <>
             {
-                props.notFound
+                props.status === "error"
                     ? <span className={styles.notFound}></span>
                     :
                     <div className={styles.pagination}>
