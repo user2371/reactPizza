@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux";
-import { setOrderAsc, setSortBy } from "../redux/slices/filterSlice";
+import { selectFilters, setOrderAsc, setSortBy } from "../redux/slices/filterSlice";
 
 
 const sortList = ["популярности", "цене", "алфавиту"];
 
 const Sort = () => {
   const [isOpen, setIsOpen] = useState(false)
-  const { sortBy, orderAsc } = useSelector((state) => state.filterReducer);
+  const { sortBy, orderAsc } = useSelector(selectFilters);
   const dispatch = useDispatch();
   const sortRef = useRef();
 

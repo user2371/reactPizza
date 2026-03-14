@@ -1,15 +1,27 @@
 import React from "react"
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useLocation } from "react-router-dom";
 import logo from "../assets/img/pizza-logo.svg"
 import Search from "./Search/Search";
+import { setFilters } from "../redux/slices/filterSlice";
 
 const Header = () => {
   const {totalPrice, totalCount} = useSelector(state => state.cartReducer)
+  const dispatch = useDispatch();
+  const location = useLocation();
+  function handleLogoClick () {
+    dispatch(setFilters({
+    activeCategory: 0,
+    sortBy: 0,
+    orderAsc: true,
+    currentPage: 1,
+    searchString: "",
+}))
+  }
   return (
     <div className="header" id="header">
       <div className="container">
-        <Link to="/">
+        <Link to="/" onClick={(handleLogoClick)}>
           <div className="header__logo">
             <img width="38" src={logo} alt="Pizza logo" />
             <div>

@@ -6,20 +6,17 @@ import Pagination from "../components/Pagination/Pagination";
 import PizzaBlock from "../components/PizzaBlock/PizzaBlock";
 import PizzaCardSkeleton from "../components/PizzaBlock/PizzaCardSkeleton";
 import Sort from "../components/Sort";
-import { setCurrentPage, setFilters } from "../redux/slices/filterSlice";
+import { selectFilters, setCurrentPage, setFilters } from "../redux/slices/filterSlice";
 import qs from "qs";
 import { useNavigate } from "react-router-dom";
-import { fetchPizzasThunk } from "../redux/slices/pizzasSlice";
+import { fetchPizzasThunk, selectPizzas } from "../redux/slices/pizzasSlice";
 
 const sortList = ["rating", "price", "title"]
 
 const Home = () => {
     const navigate = useNavigate();
-    // const [isLoading, setIsLoading] = useState(true);
-    // const [pizzas, setPizzas] = useState([]);
-    // const [notFound, setNotFound] = useState(false);
-    const { activeCategory, sortBy, orderAsc, currentPage, searchString } = useSelector((state) => state.filterReducer);
-    const { pizzas, status } = useSelector(state => state.pizzasReducer)
+    const { activeCategory, sortBy, orderAsc, currentPage, searchString } = useSelector(selectFilters);
+    const { pizzas, status } = useSelector(selectPizzas)
     const dispatch = useDispatch();
     const isSearch = useRef(false);
     const isMounted = useRef(false);
@@ -69,6 +66,7 @@ const Home = () => {
             }))
             isSearch.current = true;
         }
+        
     }, []);
 
     useEffect(() => {
