@@ -4,7 +4,7 @@ import { BrowserRouter,  Route, Routes } from "react-router-dom";
 import Cart from "./pages/Cart";
 import NotFound from "./pages/NotFound";
 import MainLayout from "./pages/MainLayout";
-import FullPizza from "./pages/FullPizza";
+import FullPizza from "./pages/FullPizza.tsx";
 
 function App() {
   return (

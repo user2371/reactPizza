@@ -3,9 +3,13 @@ import React, { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom";
 import PizzaBlock from "../components/PizzaBlock/PizzaBlock";
 
-const FullPizza = (props) => {
+const FullPizza = () => {
     const { id } = useParams();
-    const [pizza, setPizza] = useState(null);
+    const [pizza, setPizza] = useState<{
+        imageUrl: string,
+        title: string,
+        price: number,
+    }>();
     const navigate = useNavigate();
     useEffect(() => {
         async function fetchPizza() {
