@@ -1,16 +1,9 @@
 import React from "react"
 import { useDispatch } from "react-redux";
+import { PizzaItem } from "redux/slices/cartSlice.tsx";
 import { addItemtoCart, minusItemfromCart, removeItemFromCart } from "../redux/slices/cartSlice.tsx";
 
-type PizzaItem = {
-  imageUrl: string,
-  uid: number,
-  price: number,
-  title: string,
-  type: string,
-  size: number,
-  count: number,
-}
+
 
 type CartPizzaItemProps = {
 pizza: PizzaItem,

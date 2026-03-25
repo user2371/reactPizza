@@ -6,12 +6,12 @@ type PaginationProps = {
     pageSize: number,
     currentPage: number,
     status: string,
-    onLeftArrowClick: any,
-    onFirstPageDoubleArrowClick: any,
-    onPageChanged: any;
-    onRightArrowClick: any,
-    onLastPageDoubleArrowClick: any,
-    onNumberInputChange: any,
+    onLeftArrowClick: () => void,
+    onFirstPageDoubleArrowClick: () => void,
+    onPageChanged: (page: number) => void;
+    onRightArrowClick: () => void,
+    onLastPageDoubleArrowClick: () => void,
+    onNumberInputChange: (page: number) => void,
 
 }
 const Pagination = (props: PaginationProps) => {
@@ -72,7 +72,7 @@ const Pagination = (props: PaginationProps) => {
                         </div>
                         <div className={styles.rightArrow} onClick={() => { props.onRightArrowClick() }}>&#62;</div>
                         <div className={styles.lastPageDoubleArrow} onClick={() => { props.onLastPageDoubleArrowClick() }}>Last page</div>
-                        <div className={styles.pageNumberField}><input type="number" min="1" value={props.currentPage} onChange={(e) => { props.onNumberInputChange(e.target.value) }}></input>
+                        <div className={styles.pageNumberField}><input type="number" min="1" value={props.currentPage} onChange={(e) => { props.onNumberInputChange(Number(e.target.value)) }}></input>
                             <span>of {pagesCount}</span></div>
 
                     </div>

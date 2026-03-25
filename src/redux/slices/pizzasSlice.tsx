@@ -11,7 +11,7 @@ interface FetchPizzasParams {
   page?: number;
 }
 
-export const fetchPizzasThunk = createAsyncThunk<any, FetchPizzasParams, {rejectValue :string}>(
+export const fetchPizzasThunk = createAsyncThunk<PizzaItem[], FetchPizzasParams, {rejectValue :string}>(
   'pizzasSlice/fetchPizzasById',
   async (params, { rejectWithValue }) => {
     const { category, sortBy, order, search, pageSize, page } = params;

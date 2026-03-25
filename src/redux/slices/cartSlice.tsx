@@ -9,9 +9,18 @@ function areObjectsEqual(a, b, ignore = []) {
 
     return keysA.every(key => a[key] === b[key]);
 }
+export type PizzaItem = {
+    imageUrl: string,
+    uid: number,
+    price: number,
+    title: string,
+    type: string,
+    size: number,
+    count: number,
+}
 
 type CartState = {
-    items: any[],
+    items: PizzaItem[],
     totalPrice: number,
     totalCount: number,
 }

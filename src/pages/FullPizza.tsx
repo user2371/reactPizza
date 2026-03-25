@@ -10,6 +10,7 @@ const FullPizza = () => {
         price: number,
     }>();
     const navigate = useNavigate();
+
     useEffect(() => {
         async function fetchPizza() {
             try {
@@ -29,10 +30,26 @@ const FullPizza = () => {
     }
     return (
         <div className="container">
-            <h3>{pizza.title}</h3>
-            <div><img src={pizza.imageUrl} alt="pizza" /></div>
-            <div><b>Price</b> {pizza.price} ₽</div>
+            <div className="fullPizza-wrapper">
+                <div className="fullPizza-image-block"><img src={pizza.imageUrl} alt="pizza" /></div>
+                <div className="fullPizza-info-block">
+                    <h3>{pizza.title}</h3>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit ipsam mollitia in dignissimos, corporis impedit et recusandae. </p><br />
+                    <div><b>Состав:</b>
+                        <ul className="fullPizza-list">
+                            <li>Пепперони</li>
+                            <li>Моцарелла</li>
+                            <li>Сладкий перец</li>
+                            <li>Горчица</li>
+                        </ul>
+                    </div>
+                    <div className="price-block">
+                        <div className="price"><b>Price:</b> {pizza.price} ₽</div>
+                        <button className="button">+ Добавить в корзину</button>
 
+                    </div>
+                </div>
+            </div>
         </div>
     )
 };

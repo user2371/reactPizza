@@ -8,12 +8,11 @@ const Search = () => {
   const [ localSearchStr, setLocalSearchStr ] = useState("");
   const dispatch = useDispatch();
   const inputRef = useRef<HTMLInputElement>(null);
-  const debounceSearch = useMemo(() => debounce((str) => { setSearchString(str) }, 500), []);
+  const debounceSearch = useMemo(() => debounce((str) => { setSearchString(str); console.log("debounce") }, 700), []);
 
-  function onChangeInput(e: any) {
+  function onChangeInput(e: React.ChangeEvent<HTMLInputElement>) {
     setLocalSearchStr(e.target.value);
-    dispatch(setCurrentPage(1));    
-    dispatch(setSearchString(e.target.value))
+    dispatch(setCurrentPage(1));
     debounceSearch(e.target.value);
   }
   

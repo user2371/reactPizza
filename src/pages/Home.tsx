@@ -59,13 +59,15 @@ const Home = () => {
 
     useEffect(() => {
         if (window.location.search) {
-            const query = qs.parse(window.location.search.substring(1), );
-            const sortBy = Array.isArray(query.sortBy)
-                ? query.sortBy[0] // якщо масив
-                : typeof query.sortBy === "string"
-                    ? query.sortBy     // якщо рядок
-                    : "";              // якщо ParsedQs або undefined
-            // const sortBy = sortList.indexOf(query.sortBy);
+            const query = qs.parse(window.location.search.substring(1),);
+            const sortValue =
+                typeof query.sortBy === "string"
+                    ? query.sortBy
+                    : Array.isArray(query.sortBy) && typeof query.sortBy[0] === "string"
+                        ? query.sortBy[0]
+                        : "";
+
+            const sortBy = sortList.indexOf(sortValue)
             const orderAsc = query.order === "asc";
             const activeCategory = query.category ? +query.category : 0;
             const currentPage = query.page ? +query.page : 1;
@@ -112,7 +114,7 @@ const Home = () => {
 
 
 
-    function onPageChanged(page) {
+    function onPageChanged(page: number) {
         fetchPizzas(page, pageSize)
     }
 
@@ -131,7 +133,7 @@ const Home = () => {
         fetchPizzas(lastPage, pageSize)
     }
 
-    function onNumberInputChange(page) {
+    function onNumberInputChange(page: number) {
         if (typeof (page) !== "number") {
             page = +page
         }
@@ -161,7 +163,7 @@ const Home = () => {
         <>
             <div className="container">
                 <div className="content__top">
-                    <Categories setCurrentPage={setCurrentPage} />
+                    <Categories />
                     <Sort />
                 </div>
 
@@ -180,7 +182,7 @@ const Home = () => {
                             </g>
                         </svg> <br />
                         Произошла ошибка повторите попытку позже</h2>
-                    : <h2> Все пиццы</h2>}
+                    : <h2 className="home-title"> Все пиццы</h2>}
                 <div className="content__items">
                     {status === "loading"
                         ? [...new Array(10)].map((_, index) => <PizzaCardSkeleton key={index} />)

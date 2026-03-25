@@ -1,3 +1,4 @@
+import { useAppSelector } from "../hooks.ts";
 import React, { useEffect, useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux";
 import { selectFilters, setOrderAsc, setSortBy } from "../redux/slices/filterSlice.tsx";
@@ -7,11 +8,11 @@ const sortList = ["популярности", "цене", "алфавиту"];
 
 const Sort = () => {
   const [isOpen, setIsOpen] = useState(false)
-  const { sortBy, orderAsc } = useSelector(selectFilters);
+  const { sortBy, orderAsc } = useAppSelector(selectFilters);
   const dispatch = useDispatch();
   const sortRef = useRef<HTMLDivElement>(null);
 
-  function handleSortBy(option: any) {
+  function handleSortBy(option: number) {
     dispatch(setSortBy(option));
     setIsOpen(false)
   }
@@ -21,8 +22,8 @@ const Sort = () => {
   }
 
   useEffect(() => {
-    const handleClickOutside = (event: any) => {
-      if (!event.composedPath().includes(sortRef.current)) {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (sortRef.current && !event.composedPath().includes(sortRef.current)) {
         setIsOpen(false)
       }
     }
