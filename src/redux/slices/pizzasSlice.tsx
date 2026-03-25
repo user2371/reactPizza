@@ -2,8 +2,16 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const sortList = ["rating", "price", "title"]
+interface FetchPizzasParams {
+  category?: string;
+  sortBy: string;    // ключ для sortList
+  order?: string;
+  search?: string;
+  pageSize?: number;
+  page?: number;
+}
 
-export const fetchPizzasThunk = createAsyncThunk(
+export const fetchPizzasThunk = createAsyncThunk<any, FetchPizzasParams, {rejectValue :string}>(
   'pizzasSlice/fetchPizzasById',
   async (params, { rejectWithValue }) => {
     const { category, sortBy, order, search, pageSize, page } = params;
@@ -34,6 +42,22 @@ export const fetchPizzasThunk = createAsyncThunk(
     }
   }
 );
+
+type PizzaItem = {
+    title: string,
+    price: number,
+    types: number[],
+    sizes: number[],
+    id: number,
+    imageUrl: string,
+    category: number,
+    rating: number,
+}
+
+type PizzaState = {
+  pizzas: PizzaItem[],
+  status: string,
+}
 
 const initialState = {
     pizzas: [],

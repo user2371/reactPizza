@@ -10,7 +10,12 @@ function areObjectsEqual(a, b, ignore = []) {
     return keysA.every(key => a[key] === b[key]);
 }
 
-const initialState = {
+type CartState = {
+    items: any[],
+    totalPrice: number,
+    totalCount: number,
+}
+const initialState: CartState = {
     items: [],
     totalPrice: 0,
     totalCount: 0,
@@ -40,7 +45,7 @@ const cartSlice = createSlice({
                 state.totalPrice -= action.payload.price
             }
         },
-        clearCart(state, action) {
+        clearCart(state) {
             state.items = [];
             state.totalPrice = 0;
             state.totalCount = 0;
@@ -52,6 +57,8 @@ const cartSlice = createSlice({
         }
     }
 })
+
+export const selectCart = (state) => state.cartReducer;
 
 export const { addItemtoCart, minusItemfromCart, clearCart, removeItemFromCart } = cartSlice.actions;
 export default cartSlice.reducer

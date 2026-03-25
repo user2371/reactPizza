@@ -1,6 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { RootState } from "redux/store.tsx";
 
-const initialState = {
+type FilterState = {
+    activeCategory: number,
+    sortBy: number,
+    orderAsc: boolean,
+    currentPage: number,
+    searchString: string,
+}
+const initialState: FilterState = {
     activeCategory: 0,
     sortBy: 0,
     orderAsc: true,
@@ -32,12 +40,11 @@ const filterSlice = createSlice({
             state.sortBy = action.payload.sortBy;
             state.orderAsc = action.payload.orderAsc;
             state.currentPage = action.payload.currentPage;
-            state.search = action.payload.search;
+            state.searchString = action.payload.search;
         }
     }
 })
 
-export const selectFilters = (state) => state.filterReducer;
-
+export const selectFilters = (state: RootState):FilterState => state.filterReducer;
 export const { setActiveCategory, setSortBy, setOrderAsc, setCurrentPage, setFilters, setSearchString } = filterSlice.actions;
 export default filterSlice.reducer;

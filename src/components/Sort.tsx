@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux";
-import { selectFilters, setOrderAsc, setSortBy } from "../redux/slices/filterSlice";
+import { selectFilters, setOrderAsc, setSortBy } from "../redux/slices/filterSlice.tsx";
 
 
 const sortList = ["популярности", "цене", "алфавиту"];
@@ -9,9 +9,9 @@ const Sort = () => {
   const [isOpen, setIsOpen] = useState(false)
   const { sortBy, orderAsc } = useSelector(selectFilters);
   const dispatch = useDispatch();
-  const sortRef = useRef();
+  const sortRef = useRef<HTMLDivElement>(null);
 
-  function handleSortBy(option) {
+  function handleSortBy(option: any) {
     dispatch(setSortBy(option));
     setIsOpen(false)
   }
@@ -21,11 +21,11 @@ const Sort = () => {
   }
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
-        if (!event.composedPath().includes(sortRef.current)) {
-          setIsOpen(false)
-        }
-      }    
+    const handleClickOutside = (event: any) => {
+      if (!event.composedPath().includes(sortRef.current)) {
+        setIsOpen(false)
+      }
+    }
     document.body.addEventListener('click', handleClickOutside)
     return () => {
       document.body.removeEventListener('click', handleClickOutside)

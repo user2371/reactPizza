@@ -1,7 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom";
-import PizzaBlock from "../components/PizzaBlock/PizzaBlock";
 
 const FullPizza = () => {
     const { id } = useParams();

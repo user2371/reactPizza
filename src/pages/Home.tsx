@@ -1,23 +1,26 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux";
-import Categories from "../components/Categories";
-import Pagination from "../components/Pagination/Pagination";
-import PizzaBlock from "../components/PizzaBlock/PizzaBlock";
-import PizzaCardSkeleton from "../components/PizzaBlock/PizzaCardSkeleton";
-import Sort from "../components/Sort";
-import { selectFilters, setCurrentPage, setFilters } from "../redux/slices/filterSlice";
-import qs from "qs";
+import Categories from "../components/Categories.tsx";
+import Pagination from "../components/Pagination/Pagination.tsx";
+import PizzaBlock from "../components/PizzaBlock/PizzaBlock.tsx";
+import PizzaCardSkeleton from "../components/PizzaBlock/PizzaCardSkeleton.jsx";
+import Sort from "../components/Sort.tsx";
+import { selectFilters, setCurrentPage, setFilters } from "../redux/slices/filterSlice.tsx";
+import qs from 'qs';
 import { useNavigate } from "react-router-dom";
-import { fetchPizzasThunk, selectPizzas } from "../redux/slices/pizzasSlice";
+import { fetchPizzasThunk, selectPizzas } from "../redux/slices/pizzasSlice.tsx";
+import { ParsedQs } from 'qs';
+import { useAppDispatch } from "../hooks.ts";
+import { useAppSelector } from "../hooks.ts";
 
 const sortList = ["rating", "price", "title"]
 
 const Home = () => {
     const navigate = useNavigate();
-    const { activeCategory, sortBy, orderAsc, currentPage, searchString } = useSelector(selectFilters);
-    const { pizzas, status } = useSelector(selectPizzas)
-    const dispatch = useDispatch();
+    const { activeCategory, sortBy, orderAsc, currentPage, searchString } = useAppSelector(selectFilters);
+    const { pizzas, status } = useAppSelector(selectPizzas)
+    const dispatch = useAppDispatch();
     const isSearch = useRef(false);
     const isMounted = useRef(false);
     const [totalPizzasCount, setTotalPizzasCount] = useState(0);
@@ -26,7 +29,10 @@ const Home = () => {
     const category = activeCategory > 0 ? activeCategory : "";
     const search = searchString ? searchString : "";
 
-    async function fetchPizzas(page, pageSize) {
+
+
+
+    async function fetchPizzas(page: number, pageSize: number) {
         dispatch(setCurrentPage(page));
 
         dispatch(fetchPizzasThunk(
@@ -49,10 +55,17 @@ const Home = () => {
             .catch(err => console.log("FetchPizzasCount error" + err))
     }
 
+
+
     useEffect(() => {
         if (window.location.search) {
-            const query = qs.parse(window.location.search, { ignoreQueryPrefix: true });
-            const sortBy = sortList.indexOf(query.sortBy);
+            const query = qs.parse(window.location.search.substring(1), );
+            const sortBy = Array.isArray(query.sortBy)
+                ? query.sortBy[0] // якщо масив
+                : typeof query.sortBy === "string"
+                    ? query.sortBy     // якщо рядок
+                    : "";              // якщо ParsedQs або undefined
+            // const sortBy = sortList.indexOf(query.sortBy);
             const orderAsc = query.order === "asc";
             const activeCategory = query.category ? +query.category : 0;
             const currentPage = query.page ? +query.page : 1;
@@ -66,7 +79,7 @@ const Home = () => {
             }))
             isSearch.current = true;
         }
-        
+
     }, []);
 
     useEffect(() => {
@@ -77,7 +90,7 @@ const Home = () => {
                 order: orderAsc ? "asc" : "desc",
                 title: searchString ? searchString : "",
                 page: currentPage,
-            }, { ignoreQueryPrefix: true });
+            });
             navigate(`?${queryString}`);
         }
         isMounted.current = true;
@@ -114,7 +127,7 @@ const Home = () => {
         if (currentPage >= Math.ceil(totalPizzasCount / pageSize)) {
             return
         }
-        let lastPage = Math.ceil(totalPizzasCount / pageSize);
+        const lastPage = Math.ceil(totalPizzasCount / pageSize);
         fetchPizzas(lastPage, pageSize)
     }
 
@@ -130,7 +143,7 @@ const Home = () => {
     }
 
     function onLeftArrowClick() {
-        let previousPage = currentPage - 1
+        const previousPage = currentPage - 1
         if (previousPage < 1) {
             return
         }
@@ -138,7 +151,7 @@ const Home = () => {
     }
 
     function onRightArrowClick() {
-        let nextPage = currentPage + 1
+        const nextPage = currentPage + 1
         if (nextPage > Math.ceil(totalPizzasCount / pageSize)) {
             return
         }
@@ -171,22 +184,22 @@ const Home = () => {
                 <div className="content__items">
                     {status === "loading"
                         ? [...new Array(10)].map((_, index) => <PizzaCardSkeleton key={index} />)
-                        : pizzas === "Not found" ? <h2><br/>Пиццы ненайдени</h2> : pizzas.map((pizza) => <PizzaBlock key={pizza.id} {...pizza} />)
+                        : pizzas === "Not found" ? <h2><br />Пиццы ненайдени</h2> : pizzas.map((pizza) => <PizzaBlock key={pizza.id} {...pizza} />)
                     }
                 </div>
-                    {pizzas === "Not found" ? "" : 
-                <Pagination
-                    totalPizzasCount={totalPizzasCount}
-                    pageSize={pageSize}
-                    currentPage={currentPage}
-                    onPageChanged={onPageChanged}
-                    onFirstPageDoubleArrowClick={onFirstPageDoubleArrowClick}
-                    onLastPageDoubleArrowClick={onLastPageDoubleArrowClick}
-                    onNumberInputChange={onNumberInputChange}
-                    onLeftArrowClick={onLeftArrowClick}
-                    onRightArrowClick={onRightArrowClick}
-                    status={status}
-                />}
+                {pizzas === "Not found" ? "" :
+                    <Pagination
+                        totalPizzasCount={totalPizzasCount}
+                        pageSize={pageSize}
+                        currentPage={currentPage}
+                        onPageChanged={onPageChanged}
+                        onFirstPageDoubleArrowClick={onFirstPageDoubleArrowClick}
+                        onLastPageDoubleArrowClick={onLastPageDoubleArrowClick}
+                        onNumberInputChange={onNumberInputChange}
+                        onLeftArrowClick={onLeftArrowClick}
+                        onRightArrowClick={onRightArrowClick}
+                        status={status}
+                    />}
             </div>
         </>
     )

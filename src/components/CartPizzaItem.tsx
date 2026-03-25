@@ -1,8 +1,22 @@
 import React from "react"
 import { useDispatch } from "react-redux";
-import { addItemtoCart, minusItemfromCart, removeItemFromCart } from "../redux/slices/cartSlice";
+import { addItemtoCart, minusItemfromCart, removeItemFromCart } from "../redux/slices/cartSlice.tsx";
 
-const CartPizzaItem = ({ pizza }) => {
+type PizzaItem = {
+  imageUrl: string,
+  uid: number,
+  price: number,
+  title: string,
+  type: string,
+  size: number,
+  count: number,
+}
+
+type CartPizzaItemProps = {
+pizza: PizzaItem,
+}
+
+const CartPizzaItem = ( {pizza}: CartPizzaItemProps) => {
   const dispatch = useDispatch();
   function onPizzaPlusClick() {
     dispatch(addItemtoCart({ ...pizza }))
@@ -15,7 +29,6 @@ const CartPizzaItem = ({ pizza }) => {
   }
 
   function onRemoveItemFromCart() {
-    console.log("remove")
     dispatch(removeItemFromCart(pizza))
   }
   return (

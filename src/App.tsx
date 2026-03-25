@@ -1,9 +1,9 @@
 import "./scss/app.scss";
-import Home from "./pages/Home";
+import  Home  from "./pages/Home.tsx";
 import { BrowserRouter,  Route, Routes } from "react-router-dom";
-import Cart from "./pages/Cart";
-import NotFound from "./pages/NotFound";
-import MainLayout from "./pages/MainLayout";
+import Cart from "./pages/Cart.tsx";
+import NotFound from "./pages/NotFound.tsx";
+import MainLayout from "./pages/MainLayout.tsx";
 import FullPizza from "./pages/FullPizza.tsx";
 
 function App() {

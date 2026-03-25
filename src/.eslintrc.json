@@ -1,0 +1,32 @@
+{
+    "root": true,
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+        "@typescript-eslint"
+    ],
+    "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended"
+    ],
+    "rules": {
+        "@typescript-eslint/ban-types": [
+            "error",
+            {
+                "types": {
+                    "Number": {
+                        "message": "Use 'number' instead",
+                        "fixWith": "number"
+                    },
+                    "String": {
+                        "message": "Use 'string' instead",
+                        "fixWith": "string"
+                    },
+                    "Boolean": {
+                        "message": "Use 'boolean' instead",
+                        "fixWith": "boolean"
+                    }
+                }
+            }
+        ]
+    }
+}
