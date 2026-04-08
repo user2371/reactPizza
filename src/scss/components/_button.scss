@@ -1,14 +1,16 @@
-@import '../_variables';
+@use "sass:color";
+@use '../variables' as v;
+@use '../libs/mixins' as *;
 
 .button {
   display: inline-block;
-  background-color: $orange;
+  background-color: v.$orange;
   border-radius: 30px;
   padding: 10px 20px;
   min-width: 100px;
   text-align: center;
   cursor: pointer;
-  transition: background-color $duration ease-in-out, border-color $duration ease-in-out;
+  transition: background-color v.$duration ease-in-out, border-color v.$duration ease-in-out;
   border: 1px solid transparent;
   @include noselect();
 
@@ -21,15 +23,16 @@
   span,
   path,
   svg {
-    transition: all $duration ease-in-out;
+    transition: all v.$duration ease-in-out;
   }
 
   &:hover {
-    background-color: darken($orange, 8%);
+    background-color: color.adjust(v.$orange, $lightness: -8%);
+    
   }
 
   &:active {
-    background-color: darken($orange, 12%);
+    background-color: color.adjust(v.$orange, $lightness: -12%);
     transform: translateY(1px);
   }
 
@@ -45,30 +48,30 @@
   }
 
   &--black {
-    background-color: $black;
+    background-color: v.$black;
 
     &:hover,
     &:active {
-      background-color: lighten($color: $black, $amount: 10);
+     background-color: color.adjust(#232323, $lightness: 10%);
     }
   }
 
   &--outline {
     background-color: #fff;
-    border-color: $orange;
+    border-color: v.$orange;
     &,
     span {
-      color: $orange;
+      color: v.$orange;
     }
 
     svg {
       path {
-        fill: $orange;
+        fill: v.$orange;
       }
     }
 
     &:hover {
-      background-color: $orange;
+      background-color: v.$orange;
 
       &,
       span {
@@ -83,7 +86,7 @@
     }
 
     &:active {
-      background-color: darken($orange, 8%);
+      background-color: color.adjust(v.$orange, $lightness: -8%);
     }
   }
 
@@ -108,14 +111,14 @@
     &:hover {
       i {
         background-color: #fff;
-        color: $orange;
+        color: v.$orange;
       }
     }
 
     i {
       display: inline-block;
       border-radius: 30px;
-      background-color: $orange;
+      background-color: v.$orange;
       color: #fff;
       font-weight: 600;
       width: 22px;

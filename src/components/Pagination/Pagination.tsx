@@ -1,10 +1,25 @@
 import React, { useEffect, useState } from "react"
 import styles from './Pagination.module.scss'
-const Pagination = (props) => {
-    const [pages, setPages] = useState([]);
+
+type PaginationPropsType = {
+    totalPizzasCount: number,
+    pageSize: number,
+    currentPage: number,
+    status: string,
+    onPageChanged: (page: number) => void,
+    onLeftArrowClick: () => void,
+    onRightArrowClick: () => void,
+    onFirstPageDoubleArrowClick: () => void,
+    onLastPageDoubleArrowClick: () => void,
+    onNumberInputChange: (value: string) => void
+
+}
+
+const Pagination = (props: PaginationPropsType) => {
+    const [pages, setPages] = useState<number[]>([]);
 
     let pagesCount = Math.ceil(props.totalPizzasCount / props.pageSize);
-    const createPages = (pagesCount, currentPage) => {
+    const createPages = (pagesCount: number, currentPage: number) => {
         let pagesArray = [];
 
         if (pagesCount > 5) {

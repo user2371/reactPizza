@@ -1,15 +1,14 @@
 import React from "react"
 import ContentLoader from "react-content-loader"
 
-const PizzaCardSkeleton = (props) => (
+const PizzaCardSkeleton = () => (
   <ContentLoader className="pizza-block"
     speed={2}
     width={280}
     height={468}
     viewBox="0 0 280 468"
     backgroundColor="#f3f3f3"
-    foregroundColor="#ecebeb"
-    {...props}
+    foregroundColor="#ecebeb"    
   >
     <circle cx="135" cy="140" r="120" /> 
     <rect x="0" y="270" rx="10" ry="10" width="280" height="27" /> 

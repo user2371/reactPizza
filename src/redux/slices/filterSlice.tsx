@@ -1,6 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
+type FilterState = {
+    activeCategory: number,
+    sortBy: number,
+    orderAsc: boolean,
+    currentPage: number,
+    searchString: string,
+}
+
+const initialState:FilterState = {
     activeCategory: 0,
     sortBy: 0,
     orderAsc: true,

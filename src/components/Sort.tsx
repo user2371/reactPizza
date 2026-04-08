@@ -9,9 +9,9 @@ const Sort = () => {
   const [isOpen, setIsOpen] = useState(false)
   const { sortBy, orderAsc } = useSelector(selectFilters);
   const dispatch = useDispatch();
-  const sortRef = useRef();
+  const sortRef = useRef<HTMLDivElement>(null);
 
-  function handleSortBy(option) {
+  function handleSortBy(option: number) {
     dispatch(setSortBy(option));
     setIsOpen(false)
   }
@@ -21,8 +21,8 @@ const Sort = () => {
   }
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
-        if (!event.composedPath().includes(sortRef.current)) {
+    const handleClickOutside = (event: MouseEvent) => {
+        if (!sortRef.current?.contains(event.target as Node)) {
           setIsOpen(false)
         }
       }    

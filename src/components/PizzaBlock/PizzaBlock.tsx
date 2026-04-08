@@ -1,17 +1,26 @@
 import React, { useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { addItemtoCart } from "../../redux/slices/cartSlice";
+import { addItemtoCart, cartSelector } from "../../redux/slices/cartSlice";
+import { PizzaType } from "../CartPizzaItem";
 
+type PizzaBlockProps = {
+    title: string,
+    price: number,
+    types: number[],
+    sizes: number[],
+    id: number,
+    imageUrl: string,
+}
 const pizzaTypes = ["тонкое", "традиционное"];
-const PizzaBlock = ({ title, price, types, sizes, id, imageUrl }) => {
+const PizzaBlock = ({ title, price, types, sizes, id, imageUrl }: PizzaBlockProps) => {
 
     const [selectedPizzaType, setSelectedPizzaType] = useState(pizzaTypes[types[0]]);
     const [selectedPizzaSize, setSelectedPizzaSize] = useState(sizes[0])
-    const { items } = useSelector(state => state.cartReducer)
+    const { items } = useSelector(cartSelector)
     const dispatch = useDispatch();
-    const currentCart = items.filter(item => item.id == id);
-    const currentCount = currentCart.reduce((acc, item) => acc + item.count, 0);
+    const currentCart = items.filter((item: PizzaType) => item.id == id);
+    const currentCount = currentCart.reduce((acc:number, item: PizzaType) => acc + item.count, 0);
     function onAddPizza() {
         dispatch(addItemtoCart({
             title,

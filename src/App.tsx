@@ -1,7 +1,7 @@
 import "./scss/app.scss";
 import Home from "./pages/Home";
 import { BrowserRouter,  Route, Routes } from "react-router-dom";
-import Cart from "./pages/Cart";
+import Cart from "./pages/Cart.tsx";
 import NotFound from "./pages/NotFound";
 import MainLayout from "./pages/MainLayout";
 import FullPizza from "./pages/FullPizza";

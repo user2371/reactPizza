@@ -1,6 +1,7 @@
-@import './header';
-@import './button';
-@import './categories';
-@import './sort';
-@import './pizza-block';
-@import '../_variables';
+@use './header';
+@use './button';
+@use './categories';
+@use './sort';
+@use './pizza-block';
+@use '../variables' as *;
+@use '../libs/mixins' as *;

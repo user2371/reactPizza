@@ -1,4 +1,7 @@
-@import '../_variables';
+@use "sass:color";
+@use '../variables' as *;
+@use '../libs/mixins' as *;
+
 
 .categories {
   ul {
@@ -17,11 +20,12 @@
       @include noselect();
 
       &:hover {
-        background-color: darken(#f9f9f9, 2%);
+       background-color: color.adjust(#f9f9f9, $lightness: -2%);
       }
 
       &:active {
-        background-color: darken(#f9f9f9, 5%);
+        background-color: color.adjust(#f9f9f9, $lightness: -5%);
+        
       }
 
       &.active {

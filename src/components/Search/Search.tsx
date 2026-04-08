@@ -7,10 +7,10 @@ import styles from "./Search.module.scss"
 const Search = () => {
   const [ localSearchStr, setLocalSearchStr ] = useState("");
   const dispatch = useDispatch();
-  const inputRef = useRef();
+  const inputRef = useRef<HTMLInputElement>(null);
   const debounceSearch = useMemo(() => debounce((str) => { setSearchString(str) }, 500), []);
 
-  function onChangeInput(e) {
+  function onChangeInput(e: React.ChangeEvent<HTMLInputElement>) {
     setLocalSearchStr(e.target.value);
     dispatch(setCurrentPage(1));    
     dispatch(setSearchString(e.target.value))
@@ -20,7 +20,7 @@ const Search = () => {
   function onClearInput() {
     setLocalSearchStr("");
     dispatch(setSearchString(""));
-    inputRef.current.focus();
+    inputRef.current?.focus();
   }
 
   useEffect(() => {

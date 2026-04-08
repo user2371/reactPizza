@@ -1,11 +1,12 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom";
-import PizzaBlock from "../components/PizzaBlock/PizzaBlock";
+import { PizzaType } from "../components/CartPizzaItem";
 
-const FullPizza = (props) => {
+
+const FullPizza = () => {
     const { id } = useParams();
-    const [pizza, setPizza] = useState(null);
+    const [pizza, setPizza] = useState<PizzaType | null>(null);
     const navigate = useNavigate();
     useEffect(() => {
         async function fetchPizza() {

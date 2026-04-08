@@ -4,9 +4,10 @@ import { Link, useLocation } from "react-router-dom";
 import logo from "../assets/img/pizza-logo.svg"
 import Search from "./Search/Search";
 import { setFilters } from "../redux/slices/filterSlice";
+import { cartSelector } from "../redux/slices/cartSlice";
 
 const Header = () => {
-  const {totalPrice, totalCount} = useSelector(state => state.cartReducer)
+  const {totalPrice, totalCount} = useSelector(cartSelector)
   const dispatch = useDispatch();
   const location = useLocation();
   function handleLogoClick () {

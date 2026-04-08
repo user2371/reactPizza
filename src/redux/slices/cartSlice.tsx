@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { PizzaType } from "../../components/CartPizzaItem";
 
 
-function areObjectsEqual(a, b, ignore = []) {
+function areObjectsEqual(a: PizzaType, b: PizzaType, ignore = []) {
     const keysA = Object.keys(a).filter(key => !ignore.includes(key));
     const keysB = Object.keys(b).filter(key => !ignore.includes(key));
 
@@ -10,7 +11,14 @@ function areObjectsEqual(a, b, ignore = []) {
     return keysA.every(key => a[key] === b[key]);
 }
 
-const initialState = {
+
+type CartState = {
+    items: PizzaType[],
+    totalPrice: number,
+    totalCount: number,
+}
+
+const initialState: CartState = {
     items: [],
     totalPrice: 0,
     totalCount: 0,
@@ -40,7 +48,7 @@ const cartSlice = createSlice({
                 state.totalPrice -= action.payload.price
             }
         },
-        clearCart(state, action) {
+        clearCart(state) {
             state.items = [];
             state.totalPrice = 0;
             state.totalCount = 0;
@@ -52,6 +60,8 @@ const cartSlice = createSlice({
         }
     }
 })
+
+export const cartSelector = (state) => state.cartReducer;
 
 export const { addItemtoCart, minusItemfromCart, clearCart, removeItemFromCart } = cartSlice.actions;
 export default cartSlice.reducer
