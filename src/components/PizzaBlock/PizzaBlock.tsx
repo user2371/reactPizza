@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { addItemtoCart, cartSelector } from "../../redux/slices/cartSlice";
 import { PizzaType } from "../CartPizzaItem";
 
+
+
 type PizzaBlockProps = {
     title: string,
     price: number,
@@ -20,7 +22,8 @@ const PizzaBlock = ({ title, price, types, sizes, id, imageUrl }: PizzaBlockProp
     const { items } = useSelector(cartSelector)
     const dispatch = useDispatch();
     const currentCart = items.filter((item: PizzaType) => item.id == id);
-    const currentCount = currentCart.reduce((acc:number, item: PizzaType) => acc + item.count, 0);
+
+    const currentCount = currentCart.reduce((acc: number, item: PizzaType) => acc + (item.count || 0), 0);
     function onAddPizza() {
         dispatch(addItemtoCart({
             title,

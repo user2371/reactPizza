@@ -16,7 +16,7 @@ const Header = () => {
     sortBy: 0,
     orderAsc: true,
     currentPage: 1,
-    searchString: "",
+    search: "",
 }))
   }
   return (

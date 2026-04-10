@@ -1,11 +1,35 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
+import { RootState } from "../store";
+import { PizzaType } from "../../components/CartPizzaItem";
 
 const sortList = ["rating", "price", "title"]
+type PizzaBlockType = {
+    title: string,
+    price: number,
+    types: number[],
+    sizes: number[],
+    id: number,
+    imageUrl: string,
+}
 
-export const fetchPizzasThunk = createAsyncThunk(
+type PizzasResponse = PizzaBlockType[] | "Not found";
+
+export type FetchPizzasParams = {
+    category: string,
+    sortBy: number,
+    order: string,
+    search: string,
+    pageSize: number,
+    page: number,
+}
+export const fetchPizzasThunk = createAsyncThunk<
+  PizzasResponse,              
+  FetchPizzasParams,          
+  { rejectValue: string }   
+>(
   'pizzasSlice/fetchPizzasById',
-  async (params, { rejectWithValue }) => {
+  async (params: FetchPizzasParams, { rejectWithValue }) => {
     const { category, sortBy, order, search, pageSize, page } = params;
 
     try {
@@ -28,7 +52,7 @@ export const fetchPizzasThunk = createAsyncThunk(
       } catch {
         return res.data;
       }
-    } catch (err) {
+    } catch (err: any) {
       // Реальні помилки мережі, таймаути і т.д.
       return rejectWithValue(err.message);
     }
@@ -36,7 +60,7 @@ export const fetchPizzasThunk = createAsyncThunk(
 );
 
 type PizzasState = {
-    pizzas: any[],
+    pizzas: PizzaBlockType[] | "Not found",
     status: "loading" | "success" | "error",
 } 
 
@@ -48,7 +72,7 @@ const pizzasSlice = createSlice({
     name: "pizzasSlice",
     initialState: initialState,
     reducers: {
-        setPizzas(state, action) {
+        setPizzas(state, action: PayloadAction<PizzaBlockType[]>) {
             state.pizzas = action.payload
         }
     },
@@ -69,7 +93,7 @@ const pizzasSlice = createSlice({
     },
 })
 
-export const selectPizzas = (state) => state.pizzasReducer;
+export const selectPizzas = (state: RootState) => state.pizzasReducer;
 export const { setPizzas } = pizzasSlice.actions;
 
 export default pizzasSlice.reducer;

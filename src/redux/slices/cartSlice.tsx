@@ -1,14 +1,22 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { PizzaType } from "../../components/CartPizzaItem";
+import { RootState } from "../store";
 
 
-function areObjectsEqual(a: PizzaType, b: PizzaType, ignore = []) {
-    const keysA = Object.keys(a).filter(key => !ignore.includes(key));
-    const keysB = Object.keys(b).filter(key => !ignore.includes(key));
+function areObjectsEqual(
+    a: PizzaType,
+    b: PizzaType,
+    ignore: (keyof PizzaType)[] = []
+) {
+    const keysA = Object.keys(a) as (keyof PizzaType)[];
+    const keysB = Object.keys(b) as (keyof PizzaType)[];
 
-    if (keysA.length !== keysB.length) return false;
+    const filteredA = keysA.filter(key => !ignore.includes(key));
+    const filteredB = keysB.filter(key => !ignore.includes(key));
 
-    return keysA.every(key => a[key] === b[key]);
+    if (filteredA.length !== filteredB.length) return false;
+
+    return filteredA.every(key => a[key] === b[key]);
 }
 
 
@@ -17,6 +25,7 @@ type CartState = {
     totalPrice: number,
     totalCount: number,
 }
+
 
 const initialState: CartState = {
     items: [],
@@ -28,9 +37,9 @@ const cartSlice = createSlice({
     name: "cartSlice",
     initialState: initialState,
     reducers: {
-        addItemtoCart(state, action) {
+        addItemtoCart(state, action: PayloadAction<PizzaType>) {
             const item = state.items.find(el => areObjectsEqual(el, action.payload, ["count", "uid"]))
-            if (item) {
+            if (item && item.count) {
                 item.count++
             } else {
                 state.items.push({ ...action.payload, count: 1, uid: crypto.randomUUID() })
@@ -39,10 +48,10 @@ const cartSlice = createSlice({
 
             state.totalCount++
         },
-        minusItemfromCart(state, action) {
+        minusItemfromCart(state, action: PayloadAction<{ uid?: string, price: number }>) {
             const item = state.items.find(item => action.payload.uid == item.uid)
             if (!item) return;
-            if (item.count > 1) {
+            if (item.count && item.count > 1) {
                 item.count--
                 state.totalCount--
                 state.totalPrice -= action.payload.price
@@ -53,15 +62,17 @@ const cartSlice = createSlice({
             state.totalPrice = 0;
             state.totalCount = 0;
         },
-        removeItemFromCart(state, action) {
+        removeItemFromCart(state, action: PayloadAction<PizzaType>) {
             state.items = state.items.filter(item => item.uid !== action.payload.uid)
-            state.totalPrice -= action.payload.price * action.payload.count
-            state.totalCount -= action.payload.count
+            if (action.payload.count) {
+                state.totalPrice -= action.payload.price * action.payload.count
+                state.totalCount -= action.payload.count
+            }
         }
     }
 })
 
-export const cartSelector = (state) => state.cartReducer;
+export const cartSelector = (state: RootState) => state.cartReducer;
 
 export const { addItemtoCart, minusItemfromCart, clearCart, removeItemFromCart } = cartSlice.actions;
 export default cartSlice.reducer

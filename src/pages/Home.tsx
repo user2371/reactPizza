@@ -9,29 +9,30 @@ import Sort from "../components/Sort";
 import { selectFilters, setCurrentPage, setFilters } from "../redux/slices/filterSlice";
 import qs from "qs";
 import { useNavigate } from "react-router-dom";
-import { fetchPizzasThunk, selectPizzas } from "../redux/slices/pizzasSlice";
+import { FetchPizzasParams, fetchPizzasThunk, selectPizzas } from "../redux/slices/pizzasSlice";
+import { useAppDispatch } from "../redux/store";
 
 const sortList = ["rating", "price", "title"]
 
 const Home = () => {
     const navigate = useNavigate();
-    const { activeCategory, sortBy, orderAsc, currentPage, searchString } = useSelector(selectFilters);
+    const { activeCategory, sortBy, orderAsc, currentPage, search } = useSelector(selectFilters);
     const { pizzas, status } = useSelector(selectPizzas)
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const isSearch = useRef(false);
     const isMounted = useRef(false);
     const [totalPizzasCount, setTotalPizzasCount] = useState(0);
     const pageSize = 8;
     const order = orderAsc ? "asc" : "desc";
     const category = activeCategory > 0 ? activeCategory : "";
-    const search = searchString ? searchString : "";
+    const searchString = search ? search : "";
 
-    async function fetchPizzas(page, pageSize) {
+  async function  fetchPizzas (page: number, pageSize: number)  {
         dispatch(setCurrentPage(page));
 
         dispatch(fetchPizzasThunk(
             {
-                category,
+                category: String(category),
                 sortBy,
                 order,
                 search,
@@ -52,19 +53,21 @@ const Home = () => {
     useEffect(() => {
         if (window.location.search) {
             const query = qs.parse(window.location.search, { ignoreQueryPrefix: true });
-            const sortBy = sortList.indexOf(query.sortBy);
+            const sortBy = sortList.indexOf(query.sortBy as string);
             const orderAsc = query.order === "asc";
             const activeCategory = query.category ? +query.category : 0;
             const currentPage = query.page ? +query.page : 1;
-            const search = searchString ? searchString : "";
+            // const search = searchString ? searchString : "";
             dispatch(setFilters({
                 sortBy,
                 orderAsc,
                 activeCategory,
                 currentPage,
-                searchString: search
+                search: searchString,
             }))
+            fetchPizzas(currentPage, pageSize);
             isSearch.current = true;
+            console.log("window location search true")
         }
         
     }, []);
@@ -72,15 +75,17 @@ const Home = () => {
     useEffect(() => {
         if (isMounted.current) {
             const queryString = qs.stringify({
-                category: activeCategory > 0 ? activeCategory : "",
+                category: activeCategory > 0 ? activeCategory : "0",
                 sortBy: sortList[sortBy],
                 order: orderAsc ? "asc" : "desc",
                 title: searchString ? searchString : "",
                 page: currentPage,
-            }, { ignoreQueryPrefix: true });
-            navigate(`?${queryString}`);
+            });
+            navigate(`?${queryString.substring(0)}`);
+            
         }
         isMounted.current = true;
+        
     }, [sortBy, orderAsc, activeCategory, searchString, currentPage, pageSize]);
 
     useEffect(() => {
@@ -99,7 +104,7 @@ const Home = () => {
 
 
 
-    function onPageChanged(page) {
+    function onPageChanged(page: number) {
         fetchPizzas(page, pageSize)
     }
 
@@ -118,7 +123,7 @@ const Home = () => {
         fetchPizzas(lastPage, pageSize)
     }
 
-    function onNumberInputChange(page) {
+    function onNumberInputChange(page: number) {
         if (typeof (page) !== "number") {
             page = +page
         }
@@ -148,7 +153,7 @@ const Home = () => {
         <>
             <div className="container">
                 <div className="content__top">
-                    <Categories setCurrentPage={setCurrentPage} />
+                    <Categories  />
                     <Sort />
                 </div>
 

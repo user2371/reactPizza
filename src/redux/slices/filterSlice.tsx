@@ -1,11 +1,12 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { RootState } from "../store";
 
 type FilterState = {
     activeCategory: number,
     sortBy: number,
     orderAsc: boolean,
     currentPage: number,
-    searchString: string,
+    search: string,
 }
 
 const initialState:FilterState = {
@@ -13,29 +14,29 @@ const initialState:FilterState = {
     sortBy: 0,
     orderAsc: true,
     currentPage: 1,
-    searchString: "",
+    search: "",
 }
 
 const filterSlice = createSlice({
     name: "filterSlice",
     initialState: initialState,
     reducers: {
-        setActiveCategory(state, action) {
+        setActiveCategory(state, action: PayloadAction<number>) {
             state.activeCategory = action.payload;
         },
-        setSortBy(state, action) {
+        setSortBy(state, action: PayloadAction<number>) {
             state.sortBy = action.payload;
         },
-        setOrderAsc(state, action) {
+        setOrderAsc(state, action: PayloadAction<boolean>) {
             state.orderAsc = action.payload;
         },
-        setCurrentPage(state, action) {
+        setCurrentPage(state, action: PayloadAction<number>) {
             state.currentPage = action.payload;
         },
-        setSearchString(state, action) {
-            state.searchString = action.payload
+        setSearchString(state, action: PayloadAction<string>) {
+            state.search = action.payload
         },
-        setFilters(state, action) {
+        setFilters(state, action: PayloadAction<FilterState>) {
             state.activeCategory = action.payload.activeCategory;
             state.sortBy = action.payload.sortBy;
             state.orderAsc = action.payload.orderAsc;
@@ -45,7 +46,7 @@ const filterSlice = createSlice({
     }
 })
 
-export const selectFilters = (state) => state.filterReducer;
+export const selectFilters = (state: RootState) => state.filterReducer;
 
 export const { setActiveCategory, setSortBy, setOrderAsc, setCurrentPage, setFilters, setSearchString } = filterSlice.actions;
 export default filterSlice.reducer;

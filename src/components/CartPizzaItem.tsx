@@ -3,14 +3,14 @@ import { useDispatch } from "react-redux";
 import { addItemtoCart, minusItemfromCart, removeItemFromCart } from "../redux/slices/cartSlice";
 
 export type PizzaType =  {
-    uid: string;
+    uid?: string;
     id: number;
     title: string;
     imageUrl: string;
     type: string;
     size: number;
     price: number;
-    count: number;
+    count?: number;
   };
 export type CartPizzaItemProps = {
   pizza: PizzaType
@@ -64,7 +64,7 @@ const CartPizzaItem = ({ pizza }: CartPizzaItemProps) => {
           </button>
         </div>
         <div className="cart__item-price">
-          <b>{pizza.price * pizza.count} ₽</b>
+          <b>{pizza.price * (pizza.count || 1)} ₽</b>
         </div>
         <div className="cart__item-remove" >
           <button className="button button--outline button--circle"onClick={onRemoveItemFromCart}>
